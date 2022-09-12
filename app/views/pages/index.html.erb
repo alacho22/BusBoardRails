@@ -1,0 +1,31 @@
+<h1><%= @nearest_stop_name %></h1>
+<table>
+  <thead>
+    <tr>
+      <th>
+        Line Name
+      </th>
+      <th>
+        Destination
+      </th>
+      <th>
+        Expected Arrival (Mins)
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @nearest_stop_arrivals.each do |arrival| %>
+      <tr>
+        <td>
+          <%= arrival.line_number %>
+        </td>
+        <td>
+          <%= arrival.destination %>
+        </td>
+        <td>
+          <%= arrival.mins_to_arrive %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
