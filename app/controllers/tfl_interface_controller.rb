@@ -3,6 +3,11 @@ require 'net/http'
 require 'json'
 
 class TflInterfaceController < ApplicationController
+  def initialize
+    super
+    @bus_stop_types = ["NaptanBusCoachStation", "NaptanBusWayPoint", "NaptanHailAndRideSection", "NaptanOnstreetBusCoachStopCluster", "NaptanOnstreetBusCoachStopPair", "NaptanPublicBusCoachTram", "TransportInterchange"]
+  end
+
   def get_all_arrivals(stop_ids)
     all_arrivals = []
     stop_ids.each do |stop_id|
@@ -17,8 +22,6 @@ class TflInterfaceController < ApplicationController
     stop["children"].each { |child| ids << child["naptanId"] }
     ids
   end
-
-
 
   def get_nearest_stops(lat, lon)
     uri = get_nearest_stop_uri(lat, lon)
@@ -35,19 +38,12 @@ class TflInterfaceController < ApplicationController
     results = JSON.parse(json_results.body) if json_results.is_a?(Net::HTTPSuccess)
     results.each { |arrival| arrival[:minsToStation] = (arrival["timeToStation"] / 60.to_f).ceil }
 
-    model_results = results.map { |result| BusArrival.new(line_number: result["lineName"], destination: result["destinationName"], mins_to_arrive: result[:minsToStation]) }
-    model_results.each { |result| result.save }
+    model_results = results.map { |result| BusArrival.create(line_number: result["lineName"], destination: result["destinationName"], mins_to_arrive: result[:minsToStation]) }
     model_results
   end
 
-  def initialize
-    super
-    @bus_stop_types = ["NaptanBusCoachStation", "NaptanBusWayPoint", "NaptanHailAndRideSection", "NaptanOnstreetBusCoachStopCluster", "NaptanOnstreetBusCoachStopPair", "NaptanPublicBusCoachTram", "TransportInterchange"]
-  end
 
   private
-
-
 
   def get_arrivals_uri(stop_id)
     URI("https://api.tfl.gov.uk/StopPoint/#{stop_id}/Arrivals")
