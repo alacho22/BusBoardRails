@@ -9,10 +9,10 @@
     <div class="block">
       <%= form_with(method: "get", url: "/") do |form| %>
         <div class="field"
-        <%= form.label(:postcode, :class => "label") %><br>
-        <%= form.text_field(:postcode, :class => "input") %>
+        <%= form.label(:postcode, :required => true, :class => "label") %><br>
+        <%= form.text_field(:postcode, :class => "input" + (@postcode_error_msg.nil? ? "" : " is-danger"), :pattern => "^([a-zA-Z]{1,2}[a-zA-Z\\d]{1,2})\\s?(\\d[a-zA-Z]{2})$") %>
         <% unless @postcode_error_msg.nil? %>
-          <div>
+          <div class="error-prompt">
             <%= @postcode_error_msg %>
           </div>
         <% end %>
@@ -44,10 +44,13 @@
           <tbody>
           <% bus_stop_arrivals_info.bus_arrivals.each do |arrival| %>
             <tr>
-              <td>
-                <%= arrival.line_number %>
+              <td class="tfl container">
+                <span class="tfl-bus-icon">
+                  <%= arrival.line_number %>
+                </span>
+
               </td>
-              <td>
+              <td class="tfl">
                 <%= arrival.destination %>
               </td>
               <td>

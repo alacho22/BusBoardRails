@@ -1,2 +1,26 @@
 @import '_layout';
 @import 'bulma';
+
+.error-prompt {
+  color: $danger
+}
+
+@font-face {
+  font-family: "London Tube";
+  src: font-url('LondonTube-MABx.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.tfl {
+  font-family: "London Tube", sans-serif;
+  font-size: 1.5rem;
+}
+
+$bus-red: #DE2110;
+
+.tfl-bus-icon {
+  background: $bus-red;
+  color: white;
+  padding: 0 0.2em
+}

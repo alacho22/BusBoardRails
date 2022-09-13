@@ -16,8 +16,13 @@ class PostcodeInterfaceController < ApplicationController
 
   def is_postcode_valid(possible_postcode)
     uri = get_validate_postcode_uri(possible_postcode)
-    res = Net::HTTP.get_response(uri)
-    (JSON.parse(res.body) if res.is_a?(Net::HTTPSuccess))["result"]
+    json_result = Net::HTTP.get_response(uri)
+    result = json_result.is_a?(Net::HTTPSuccess) ? JSON.parse(json_result.body) : nil
+    if result.nil?
+      false
+    else
+      result["result"]
+    end
   end
 
   private
