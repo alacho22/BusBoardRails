@@ -1,50 +1,67 @@
-<h1>Your Personal Bus Board</h1>
-<%= form_with(method: "get", url: "/") do |form| %>
-  <div>
-    <%= form.label :postcode %><br>
-    <%= form.text_field :postcode %>
-    <% unless @postcode_error_msg.nil? %>
-      <div>
-        <%= @postcode_error_msg %>
+<!DOCTYPE html>
+<head>
+  <title>Bus Board</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <div class="container is-fluid">
+    <h1 class="title">Your Personal Bus Board</h1>
+    <div class="block">
+      <%= form_with(method: "get", url: "/") do |form| %>
+        <div class="field"
+        <%= form.label(:postcode, :class => "label") %><br>
+        <%= form.text_field(:postcode, :class => "input") %>
+        <% unless @postcode_error_msg.nil? %>
+          <div>
+            <%= @postcode_error_msg %>
+          </div>
+        <% end %>
+        </div>
+        <div class="block">
+          <%= form.submit("Search", :class => "button")  %>
+        </div>
+      <% end %>
       </div>
-    <% end %>
-  </div>
-  <div>
-    <%= form.submit "Submit" %>
-  </div>
-<% end %>
 
-<% @bus_stop_arrivals_infos.each do |bus_stop_arrivals_info| %>
-  <h2><%= bus_stop_arrivals_info.stop_name %></h2>
-  <table>
-    <thead>
-    <tr>
-      <th>
-        Line Name
-      </th>
-      <th>
-        Destination
-      </th>
-      <th>
-        Expected Arrival (Mins)
-      </th>
-    </tr>
-    </thead>
-    <tbody>
-    <% bus_stop_arrivals_info.bus_arrivals.each do |arrival| %>
-      <tr>
-        <td>
-          <%= arrival.line_number %>
-        </td>
-        <td>
-          <%= arrival.destination %>
-        </td>
-        <td>
-          <%= arrival.mins_to_arrive %>
-        </td>
-      </tr>
+
+    <% @bus_stop_arrivals_infos.each do |bus_stop_arrivals_info| %>
+      <div class="block">
+        <h2 class="subtitle"><%= bus_stop_arrivals_info.stop_name %></h2>
+        <table class="table">
+          <thead>
+          <tr>
+            <th>
+              Line Name
+            </th>
+            <th>
+              Destination
+            </th>
+            <th>
+              Expected Arrival (Mins)
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <% bus_stop_arrivals_info.bus_arrivals.each do |arrival| %>
+            <tr>
+              <td>
+                <%= arrival.line_number %>
+              </td>
+              <td>
+                <%= arrival.destination %>
+              </td>
+              <td>
+                <%= arrival.mins_to_arrive %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+
     <% end %>
-    </tbody>
-  </table>
-<% end %>
+  </div>
+
+
+</body>
 
