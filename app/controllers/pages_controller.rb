@@ -7,19 +7,23 @@ class PagesController < ApplicationController
   end
 
   def index
-    params.permit(:postcode)
+    params.permit(:postcode, :commit)
     postcode = params[:postcode]
+    @bus_stop_arrivals_infos = []
+    @postcode_error_msg = nil
     if postcode
-      postcode_lat_lon = @postcode_interface.get_postcode_lat_long(postcode)
-      postcode_lat = postcode_lat_lon[:lat]
-      postcode_lon = postcode_lat_lon[:lon]
+      if @postcode_interface.is_postcode_valid(postcode)
+        postcode_lat_lon = @postcode_interface.get_postcode_lat_long(postcode)
+        postcode_lat = postcode_lat_lon[:lat]
+        postcode_lon = postcode_lat_lon[:lon]
 
-      nearest_stops = @tfl_interface.get_nearest_stops(postcode_lat, postcode_lon)
+        nearest_stops = @tfl_interface.get_nearest_stops(postcode_lat, postcode_lon)
 
-      @bus_stop_arrivals_infos = nearest_stops[0, 2]
-                                   .map { |stop| get_stop_arrival_info(stop)}
-    else
-      @bus_stop_arrivals_infos = []
+        @bus_stop_arrivals_infos = nearest_stops[0, 2]
+                                     .map { |stop| get_stop_arrival_info(stop)}
+      else
+        @postcode_error_msg = "Please enter a valid postcode"
+      end
     end
   end
 

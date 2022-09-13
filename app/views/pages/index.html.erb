@@ -3,9 +3,14 @@
   <div>
     <%= form.label :postcode %><br>
     <%= form.text_field :postcode %>
+    <% unless @postcode_error_msg.nil? %>
+      <div>
+        <%= @postcode_error_msg %>
+      </div>
+    <% end %>
   </div>
   <div>
-    <%= form.submit %>
+    <%= form.submit "Submit" %>
   </div>
 <% end %>
 
