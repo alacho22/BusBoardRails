@@ -17,19 +17,9 @@ class PagesController < ApplicationController
     postcode_lon = postcode_lat_lon[:lon]
 
     nearest_stops = @tfl_interface.get_nearest_stops(postcode_lat, postcode_lon)
-    nearest_stop_arrival_info = get_stop_arrival_info(nearest_stops[0])
-    nearest_stop = nearest_stops[0]
-    @nearest_stop_name = nearest_stop["commonName"]
-    @nearest_stop_arrivals = @tfl_interface.get_all_arrivals(@tfl_interface.get_stop_ids(nearest_stop))
-    @nearest_stop_arrivals.sort_by! { |arrival| arrival[:mins_to_arrive] }
-    @nearest_stop_arrivals = @nearest_stop_arrivals[0, 5]
 
-    second_nearest_stop = nearest_stops[1]
-    @second_nearest_stop_name = second_nearest_stop["commonName"]
-    @second_nearest_stop_arrivals = @tfl_interface.get_all_arrivals(@tfl_interface.get_stop_ids(nearest_stop))
-    @second_nearest_stop_arrivals.sort_by! { |arrival| arrival[:mins_to_arrive]}
-    @second_nearest_stop_arrivals = @second_nearest_stop_arrivals[0, 5]
-
+    @bus_stop_arrivals_infos = nearest_stops[0, 2]
+                                 .map { |stop| get_stop_arrival_info(stop)}
   end
 
   private
@@ -39,8 +29,8 @@ class PagesController < ApplicationController
     arrivals = @tfl_interface.get_all_arrivals(@tfl_interface.get_stop_ids(stop))
     arrivals.sort_by! { |arrival| arrival[:mins_to_arrive] }
     arrivals_info = BusStopArrivalsInfo.new(stop_name: stop_name)
-    arrivals_info.bus_arrivals = arrivals
-    arrivals_info.save
+    arrivals_info.bus_arrivals = arrivals[0, 5]
+    arrivals_info
   end
 
 end

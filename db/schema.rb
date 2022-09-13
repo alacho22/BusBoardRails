@@ -15,10 +15,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_12_144139) do
     t.string "line_number"
     t.string "destination"
     t.integer "mins_to_arrive"
-    t.integer "bus_stop_arrivals_infos_id"
+    t.integer "bus_stop_arrivals_info_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["bus_stop_arrivals_infos_id"], name: "index_bus_arrivals_on_bus_stop_arrivals_infos_id"
+    t.index ["bus_stop_arrivals_info_id"], name: "index_bus_arrivals_on_bus_stop_arrivals_info_id"
   end
 
   create_table "bus_stop_arrivals_infos", force: :cascade do |t|
@@ -27,5 +27,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_12_144139) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "bus_arrivals", "bus_stop_arrivals_infos", column: "bus_stop_arrivals_infos_id"
+  add_foreign_key "bus_arrivals", "bus_stop_arrivals_infos"
 end

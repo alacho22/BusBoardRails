@@ -1,6 +1,7 @@
-<h1><%= @nearest_stop_name %></h1>
-<table>
-  <thead>
+<% @bus_stop_arrivals_infos.each do |bus_stop_arrivals_info| %>
+  <h1><%= bus_stop_arrivals_info.stop_name %></h1>
+  <table>
+    <thead>
     <tr>
       <th>
         Line Name
@@ -12,9 +13,9 @@
         Expected Arrival (Mins)
       </th>
     </tr>
-  </thead>
-  <tbody>
-    <% @nearest_stop_arrivals.each do |arrival| %>
+    </thead>
+    <tbody>
+    <% bus_stop_arrivals_info.bus_arrivals.each do |arrival| %>
       <tr>
         <td>
           <%= arrival.line_number %>
@@ -27,5 +28,7 @@
         </td>
       </tr>
     <% end %>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+<% end %>
+
