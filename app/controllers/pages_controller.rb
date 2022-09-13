@@ -1,7 +1,5 @@
 class PagesController < ApplicationController
 
-
-
   def initialize
     super
     @postcode_interface = PostcodeInterfaceController.new
@@ -9,17 +7,20 @@ class PagesController < ApplicationController
   end
 
   def index
-    params.require(:postcode)
     params.permit(:postcode)
     postcode = params[:postcode]
-    postcode_lat_lon = @postcode_interface.get_postcode_lat_long(postcode)
-    postcode_lat = postcode_lat_lon[:lat]
-    postcode_lon = postcode_lat_lon[:lon]
+    if postcode
+      postcode_lat_lon = @postcode_interface.get_postcode_lat_long(postcode)
+      postcode_lat = postcode_lat_lon[:lat]
+      postcode_lon = postcode_lat_lon[:lon]
 
-    nearest_stops = @tfl_interface.get_nearest_stops(postcode_lat, postcode_lon)
+      nearest_stops = @tfl_interface.get_nearest_stops(postcode_lat, postcode_lon)
 
-    @bus_stop_arrivals_infos = nearest_stops[0, 2]
-                                 .map { |stop| get_stop_arrival_info(stop)}
+      @bus_stop_arrivals_infos = nearest_stops[0, 2]
+                                   .map { |stop| get_stop_arrival_info(stop)}
+    else
+      @bus_stop_arrivals_infos = []
+    end
   end
 
   private

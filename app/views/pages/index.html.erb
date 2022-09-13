@@ -1,5 +1,16 @@
+<h1>Your Personal Bus Board</h1>
+<%= form_with(method: "get", url: "/") do |form| %>
+  <div>
+    <%= form.label :postcode %><br>
+    <%= form.text_field :postcode %>
+  </div>
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
 <% @bus_stop_arrivals_infos.each do |bus_stop_arrivals_info| %>
-  <h1><%= bus_stop_arrivals_info.stop_name %></h1>
+  <h2><%= bus_stop_arrivals_info.stop_name %></h2>
   <table>
     <thead>
     <tr>
