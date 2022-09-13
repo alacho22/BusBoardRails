@@ -1,6 +1,7 @@
 @import '_layout';
 @import 'bulma';
 
+
 .error-prompt {
   color: $danger
 }
@@ -24,3 +25,5 @@ $bus-red: #DE2110;
   color: white;
   padding: 0 0.2em
 }
+
+#map { height: 180px; }
